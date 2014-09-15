@@ -34,10 +34,10 @@ if test "$CURRENT" = "$VERSION"; then
 fi
 
 echo "Removing any Puppet gem installations ..."
-sudo gem uninstall -a -x puppet facter 2>/dev/null || true
+gem uninstall -a -x puppet facter 2>/dev/null || true
 
 echo "Installing Puppet version $VERSION ..."
 wget -q "https://apt.puppetlabs.com/$PACKAGE"
-sudo dpkg -i "$PACKAGE"
-sudo apt-get update
-sudo apt-get install -y "puppet=$VERSION"
+dpkg -i "$PACKAGE"
+apt-get update
+apt-get install -y "puppet=$VERSION"
