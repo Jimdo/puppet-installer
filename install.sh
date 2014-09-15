@@ -1,6 +1,6 @@
 #!/bin/sh
-#/ Helper script to install a specific version of Puppet
-#/ Usage: puppet-installer.sh <Puppet version>
+#/ Install a specific version of Puppet
+#/ Usage: install.sh <Puppet version>
 
 set -e
 
