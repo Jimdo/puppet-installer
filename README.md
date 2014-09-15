@@ -1,7 +1,7 @@
 # Puppet Installer
 
-`install.sh` installs a specific version of Puppet. It was inspired by [Omnibus
-Installer].
+`install.sh` installs a specific or the latest version of Puppet. It was
+inspired by [Omnibus Installer].
 
 The script's primary use case is to install Puppet inside a Vagrant machine
 just before provisioning. For example:

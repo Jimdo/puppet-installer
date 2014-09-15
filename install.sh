@@ -1,5 +1,5 @@
 #!/bin/bash
-#/ Install a specific version of Puppet
+#/ Install a specific or the latest version of Puppet
 #/ Usage: install.sh [-v <Puppet version>]
 
 set -e
