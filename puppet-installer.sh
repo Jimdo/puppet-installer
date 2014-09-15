@@ -1,10 +1,29 @@
 #!/bin/sh
-# Helper script to install a specific version of Puppet
-# Usage: puppet-installer.sh <Puppet version>
+#/ Helper script to install a specific version of Puppet
+#/ Usage: puppet-installer.sh <Puppet version>
 
 set -e
 
-VERSION=$1
+VERSION=
+
+while test "$#" -ne 0; do
+    case "$1" in
+    -h|--h|--he|--hel|--help)
+        grep '^#/' <"$0" | cut -c4-; exit 0 ;;
+    -v|--v|--ve|--ver|--vers|--versi|--versio|--version)
+        VERSION=$2; shift 2 ;;
+    --)
+        shift; break ;;
+    -|[!-]*)
+        break ;;
+    -*)
+        echo >&2 "error: invalid option '$1'"; exit 1 ;;
+    esac
+done
+
+# TODO: make version optional
+test -n "$VERSION" || { echo >&2 "error: version required"; exit 1; }
+
 DISTRO=$(lsb_release -cs)
 PACKAGE="puppetlabs-release-$DISTRO.deb"
 
