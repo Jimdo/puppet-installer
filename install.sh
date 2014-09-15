@@ -1,8 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 #/ Install a specific version of Puppet
 #/ Usage: install.sh [-v <Puppet version>]
 
 set -e
+set -o pipefail
 
 version=
 
