@@ -54,3 +54,5 @@ echo "==> Installing Puppet version $version ..."
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
 apt-get install --yes --force-yes puppet
+
+echo "==> Puppet $(puppet --version) successfully installed."
