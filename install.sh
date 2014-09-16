@@ -28,18 +28,25 @@ if test "$current" = "$version"; then
     exit 0
 fi
 
-echo "Removing any Puppet gem installations ..."
+echo "==> Removing any Puppet gem installations ..."
 gem uninstall -a -x puppet facter 2>/dev/null || true
 
-echo "Installing Puppet version $version ..."
+echo "==> Installing Puppet release package ..."
 distro=$(lsb_release -cs)
 pkg="puppetlabs-release-$distro.deb"
 wget -q "https://apt.puppetlabs.com/$pkg"
 dpkg -i "$pkg"
-apt-get update
+
 if test -n "$version"; then
-    pkg="puppet=$version"
-else
-    pkg="puppet"
+    echo "==> Pinning version to $version ..."
+    cat >/etc/apt/preferences.d/puppet <<EOF
+Package: puppet puppet-common
+Pin: version $version
+Pin-Priority: 1001
+EOF
 fi
-apt-get install -y "$pkg"
+
+echo "==> Installing Puppet version $version ..."
+export DEBIAN_FRONTEND=noninteractive
+apt-get update
+apt-get install --yes --force-yes puppet
