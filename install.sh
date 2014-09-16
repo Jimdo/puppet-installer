@@ -36,6 +36,7 @@ distro=$(lsb_release -cs)
 pkg="puppetlabs-release-$distro.deb"
 wget -q "https://apt.puppetlabs.com/$pkg"
 dpkg -i "$pkg"
+rm -f "$pkg"
 
 if test -n "$version"; then
     echo "==> Pinning version to $version ..."
