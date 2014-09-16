@@ -40,11 +40,14 @@ rm -f "$pkg"
 
 if test -n "$version"; then
     echo "==> Pinning version to $version ..."
-    cat >/etc/apt/preferences.d/puppet <<EOF
+    cat >/etc/apt/preferences.d/puppet-installer <<EOF
 Package: puppet puppet-common
 Pin: version $version
 Pin-Priority: 1001
 EOF
+else
+    echo "==> Removing version pinning ..."
+    rm -f /etc/apt/preferences.d/puppet-installer
 fi
 
 echo "==> Installing Puppet version $version ..."
