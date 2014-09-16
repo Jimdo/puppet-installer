@@ -5,6 +5,8 @@
 set -e
 set -o pipefail
 
+export DEBIAN_FRONTEND=noninteractive
+
 version=
 
 while test "$#" -ne 0; do
@@ -51,7 +53,6 @@ else
 fi
 
 echo "==> Installing Puppet version $version ..."
-export DEBIAN_FRONTEND=noninteractive
 apt-get update
 apt-get install --yes --force-yes puppet
 
