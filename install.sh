@@ -52,8 +52,10 @@ else
     rm -f /etc/apt/preferences.d/puppet-installer
 fi
 
-echo "==> Installing Puppet version $version ..."
+echo "==> Updating package index ..."
 apt-get update
+
+echo "==> Installing Puppet version $version ..."
 apt-get install --yes --force-yes puppet
 
 echo "==> Puppet $(puppet --version) successfully installed."
