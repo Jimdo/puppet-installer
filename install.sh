@@ -7,14 +7,14 @@ set -o pipefail
 
 export DEBIAN_FRONTEND=noninteractive
 
-version=
+puppet_version=
 
 while test "$#" -ne 0; do
     case "$1" in
     -h|--h|--he|--hel|--help)
         grep '^#/' <"$0" | cut -c4-; exit 0 ;;
     -v|--v|--ve|--ver|--vers|--versi|--versio|--version)
-        version=$2; shift 2 ;;
+        puppet_version=$2; shift 2 ;;
     --)
         shift; break ;;
     -|[!-]*)
@@ -25,8 +25,8 @@ while test "$#" -ne 0; do
 done
 
 current=$(apt-cache policy puppet | awk '/Installed:/ {print $2}' 2>/dev/null)
-if test "$current" = "$version"; then
-    echo "Puppet version $version already installed."
+if test "$current" = "$puppet_version"; then
+    echo "Puppet version $puppet_version already installed."
     exit 0
 fi
 
@@ -40,11 +40,20 @@ wget -q "https://apt.puppetlabs.com/$pkg"
 dpkg -i "$pkg"
 rm -f "$pkg"
 
-if test -n "$version"; then
-    echo "==> Pinning version to $version ..."
+if test -n "$puppet_version"; then
+    case "$puppet_version" in
+    3.*) facter_version="2.*" ;;
+    *)   facter_version="1.*" ;;
+    esac
+
+    echo "==> Pinning Puppet to $puppet_version and Facter to $facter_version ..."
     cat >/etc/apt/preferences.d/puppet-installer <<EOF
 Package: puppet puppet-common
-Pin: version $version
+Pin: version $puppet_version
+Pin-Priority: 1001
+
+Package: facter
+Pin: version $facter_version
 Pin-Priority: 1001
 EOF
 else
@@ -55,7 +64,7 @@ fi
 echo "==> Updating package index ..."
 apt-get update
 
-echo "==> Installing Puppet version $version ..."
+echo "==> Installing Puppet version $puppet_version ..."
 apt-get install --yes --force-yes puppet
 
 echo "==> Puppet $(puppet --version) successfully installed."
